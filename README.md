@@ -9,7 +9,7 @@
 在 PowerShell 中执行：
 
 ```powershell
-$s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.2-insider.20260828/install.ps1";if($LASTEXITCODE -ne 0){throw 'installer bootstrap download failed'};iex($s|Out-String)
+$s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.3-insider.20260828/install.ps1";if($LASTEXITCODE -ne 0){throw 'installer bootstrap download failed'};iex($s|Out-String)
 ```
 
 安装器首次提示可修改 Program Root；程序、安装暂存、收据和卸载 helper 都位于该根。安装器只下载并对独立 MSIX 验签，不注册 WindowsApps 副本。
@@ -19,8 +19,8 @@ $s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanf
 
 本次 Release 的证书指纹：
 
-- SHA-256：`3969c6869cbaf1428a1a0f1b558ccfa74bd8d5c37afdca150b1531f45cacdf81`
-- SHA-1：`193FAEE3C6195DB6CCA30BA9179503C50741BBA8`
+- SHA-256：`7c208b19a13d5a198c19ecf7d8ba95ddf0e6b1bc2d9cb2177ec05d10d77e8cf0`
+- SHA-1：`E97D38977D22E45C51F598F5D2366DFAE717545E`
 
 ## 运行
 
@@ -36,7 +36,7 @@ s17
 ## 卸载
 
 ```powershell
-$s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.2-insider.20260828/uninstall.ps1";if($LASTEXITCODE -ne 0){throw 'uninstaller bootstrap download failed'};iex($s|Out-String)
+$s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.3-insider.20260828/uninstall.ps1";if($LASTEXITCODE -ne 0){throw 'uninstaller bootstrap download failed'};iex($s|Out-String)
 ```
 
 卸载默认保留用户数据。移除本机证书信任时，Windows 会请求管理员确认。
