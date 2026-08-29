@@ -9,18 +9,18 @@
 在 PowerShell 中执行：
 
 ```powershell
-$s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.3-insider.20260828/install.ps1";if($LASTEXITCODE -ne 0){throw 'installer bootstrap download failed'};iex($s|Out-String)
+irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.7-insider.20260829/install.ps1' | iex
 ```
 
-安装器首次提示可修改 Program Root；程序、安装暂存、收据和卸载 helper 都位于该根。安装器只下载并对独立 MSIX 验签，不注册 WindowsApps 副本。
+第一项交互是“请选择语言 / Choose your language”，可用方向键选择简体中文或 English。随后可修改程序安装位置；程序和更新所需的大文件都保存在所选位置。安装阶段不会询问 Workspace。
 
 > [!IMPORTANT]
 > 当前为免费自签名内测版。安装器会先展示发布者和完整证书指纹；只有你明确输入 `INSTALL` 后，Windows 才会请求管理员确认，将公开证书加入 `LocalMachine\TrustedPeople`。证书信任影响本机所有用户。本版本尚无正式 CA、Microsoft Trusted Signing、Microsoft Store 或 SmartScreen 信誉。
 
 本次 Release 的证书指纹：
 
-- SHA-256：`7c208b19a13d5a198c19ecf7d8ba95ddf0e6b1bc2d9cb2177ec05d10d77e8cf0`
-- SHA-1：`E97D38977D22E45C51F598F5D2366DFAE717545E`
+- SHA-256：`c05d98e50009ef72d8d496267ef2506c07d30391d967b0425b4cc8bdb8f89006`
+- SHA-1：`8194844A3AC544AB42D0FAAB5EA6E3DBB553F810`
 
 ## 运行
 
@@ -36,7 +36,7 @@ s17
 ## 卸载
 
 ```powershell
-$s=& "$env:SystemRoot\System32\curl.exe" -q -fsSL "https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.3-insider.20260828/uninstall.ps1";if($LASTEXITCODE -ne 0){throw 'uninstaller bootstrap download failed'};iex($s|Out-String)
+irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.7-insider.20260829/uninstall.ps1' | iex
 ```
 
 卸载默认保留用户数据。移除本机证书信任时，Windows 会请求管理员确认。
