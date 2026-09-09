@@ -9,7 +9,7 @@
 在 PowerShell 中执行：
 
 ```powershell
-irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.8-insider.20260908/install.ps1' | iex
+irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.9-insider.20260909/install.ps1' | iex
 ```
 
 第一项交互是“请选择语言 / Choose your language”，可用方向键选择简体中文或 English。随后可修改程序安装位置；程序、CLI 和更新暂存都保存在所选位置。安装阶段不会询问 Workspace。
@@ -19,8 +19,11 @@ irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0
 
 本次 Release 的证书指纹：
 
-- SHA-256：`4f184d4a24699cda4cfbe1a7db0f3bd6ca484e4c1bf6c4353be51e8c2ba523c1`
-- SHA-1：`AEF9DCD4258EF5454442BCEDAF3E21F18543F5C0`
+- SHA-256：`399c49f5be17efa31ce77fa889e329b55d5823e3c7a9fa461281ebf10a681412`
+- SHA-1：`F697F26EAE6A757B4A307547C40042A8D7F82C55`
+
+v1.0.9 加固了 Windows PowerShell 5.1 下公网下载的有界重试、续传与失败清理；下载后的完整文件仍须
+通过 `SHA256SUMS` 和发行清单校验后才会进入安装。
 
 ## 运行
 
@@ -37,7 +40,7 @@ s17
 ## 卸载
 
 ```powershell
-irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.8-insider.20260908/uninstall.ps1' | iex
+irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.9-insider.20260909/uninstall.ps1' | iex
 ```
 
 卸载默认保留用户数据。移除本机证书信任时，Windows 会请求管理员确认。
