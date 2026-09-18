@@ -1,49 +1,50 @@
 # 十七° Agent
 
-十七° Agent 是运行在 Windows 终端里的本地编程智能体：你从哪个项目目录启动，哪个目录就是当前 Workspace。
+十七° Agent 是 CLI-first 的通用智能体。你从哪个目录启动 `s17`，哪个绝对目录就是本次 Workspace。
 
-本仓库仅用于 Windows V1 内测版的安装说明与 Release 下载。
+本仓库只提供 Windows V1 内测版的安装说明与二进制发行资产，不发布产品源码。
 
 ## 安装
 
-在 PowerShell 中执行：
+当前内测版为 [v1.0.12-insider.20260918](https://github.com/canyexuanfan/shiqi-agent-releases/releases/tag/v1.0.12-insider.20260918)。
+
+打开普通、非管理员 Windows PowerShell，复制这一整行：
 
 ```powershell
-irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.10-insider.20260913/install.ps1' | iex
+$s17Bootstrap=$null;$s17BootstrapOk=$false;foreach($s17Attempt in 1..3){try{$s17Bootstrap=& "$env:SystemRoot\System32\curl.exe" -q -fsSL --proto '=https' --proto-redir '=https' --max-redirs 5 --connect-timeout 10 --max-time 25 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.12-insider.20260918/install.ps1' 2>$null}catch{$s17Bootstrap=$null};if($LASTEXITCODE -eq 0 -and $s17Bootstrap){$s17BootstrapOk=$true;break};$s17Bootstrap=$null;if($s17Attempt -lt 3){Start-Sleep -Seconds 2}};if(-not $s17BootstrapOk){throw 'installer bootstrap download failed'};iex($s17Bootstrap|Out-String)
 ```
 
-第一项交互是“请选择语言 / Choose your language”，可用方向键选择简体中文或 English。随后可修改程序安装位置；程序、CLI 和更新暂存都保存在所选位置。安装阶段不会询问 Workspace。
+先选简体中文或 English，再选择程序安装位置。严格识别的旧中断安装可以恢复；已有安装进入原位修复，陌生非空目录不会被覆盖。普通安装、更新、恢复和卸载均为当前用户级操作，不导入机器证书、不安装 MSIX，也不会主动弹 UAC。
 
-> [!IMPORTANT]
-> 当前为免费自签名内测版，尚无正式 CA、Microsoft Trusted Signing、Microsoft Store 或 SmartScreen 信誉，Windows、浏览器或安全软件仍可能显示下载或未知发布者提示。安装器会在后台校验固定清单、文件哈希、签名及公开证书身份；普通安装、更新和卸载均为当前用户级操作，不导入系统证书，也不会主动请求管理员权限或弹出 UAC。
+这是免费自签名内测版，尚无商业 CA 或 SmartScreen 信誉；浏览器或安全软件可能显示未知发布者提示。不需要关闭系统安全功能，安装器仍会严格验证发行身份、完整性和安装后可用性。
 
-本次 Release 的证书指纹：
+## 配置与实际使用
 
-- SHA-256：`85aea21c384caceb4d09157da13188874497aa153a2716714070cf4e29dbb17c`
-- SHA-1：`E4C94E0835A1C4AE37324037E839A593D3D0EA7C`
-
-v1.0.10 改为完整的用户级零 UAC 安装链，并保留 Windows PowerShell 5.1 下公网下载的有界重试、断点
-恢复和失败关闭。它同时补齐可修改 Program Root 与 Data Root、失败后继续 Setup、配置后更新、保留数据
-重装以及安装后真实 Agent 文件与进程操作；下载后的完整文件仍须通过 `SHA256SUMS` 和发行清单校验。
-
-## 运行
+安装成功后关闭安装窗口，打开新的普通 PowerShell，进入自己的安全测试目录：
 
 ```powershell
-cd <你的项目目录>
+Get-Command s17
+s17 --help
+s17 doctor
 s17
 ```
 
-- 启动 `s17` 时的当前目录就是本次会话的 Workspace。
-- 首次运行会进入 Setup，引导配置数据根、Provider、API Key、模型和 endpoint；数据根默认建议 `ProgramRoot\data`，可修改。
-- Windows 系统盘只保留系统要求的小型位置指针、凭据库记录和注册元数据；模型、运行时、下载、更新暂存和用户数据不会静默回落到 C 盘。
-- 常用检查命令：`s17 --version`、`s17 --help`、`s17 doctor`、`s17 --headless`。
+首次裸 `s17` 进入同语言 Setup，配置就绪后直接进入 Agent。自行选择 Quick/Custom/Blank、数据位置、Provider、凭据、模型与 endpoint；凭据输入隐藏，请勿上传 Key。
 
-## 卸载
+程序位置、数据位置和当前 Workspace 是三件不同的事。数据根默认建议 `ProgramRoot\data`，可以另外放到非 C 盘。C 盘仅保留系统要求的小型位置指针、凭据库记录和注册元数据；模型、下载、更新暂存和可控数据不会静默回落到 C 盘。
+
+输入普通自然语言任务即可使用。文件写入与进程操作需要逐次确认；拒绝后不应产生效果。换目录启动会改变 Workspace，但保留已保存的配置和数据根。真实 Provider、输入法与终端体验请自行完整测试；自动验收不能代替真人体验。
+
+## 更新、卸载与保留数据重装
+
+再次执行安装命令即可原位更新或修复；数据根、语言和配置应保持，不重复 PATH。
+
+需要卸载时，在普通 PowerShell 执行：
 
 ```powershell
-irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.10-insider.20260913/uninstall.ps1' | iex
+$s17Bootstrap=$null;$s17BootstrapOk=$false;foreach($s17Attempt in 1..3){try{$s17Bootstrap=& "$env:SystemRoot\System32\curl.exe" -q -fsSL --proto '=https' --proto-redir '=https' --max-redirs 5 --connect-timeout 10 --max-time 25 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.12-insider.20260918/uninstall.ps1' 2>$null}catch{$s17Bootstrap=$null};if($LASTEXITCODE -eq 0 -and $s17Bootstrap){$s17BootstrapOk=$true;break};$s17Bootstrap=$null;if($s17Attempt -lt 3){Start-Sleep -Seconds 2}};if(-not $s17BootstrapOk){throw 'uninstaller bootstrap download failed'};iex($s17Bootstrap|Out-String)
 ```
 
-卸载默认保留用户数据，并且不会主动请求管理员权限或弹出 UAC。
+卸载默认保留数据，只移除当前用户受管程序与精确 PATH 条目；未知用户文件不会被删除。重新安装回原位置后，可以继续使用保留的数据和配置。
 
-下载完整性可使用同一 Release 中的 `SHA256SUMS` 核对。问题与建议请提交到 [Issues](https://github.com/canyexuanfan/shiqi-agent-releases/issues)。
+失败时保留不含凭据的提示和诊断日志位置，不手工删安装目录、写 PATH 或导入证书。反馈请说明步骤、实际结果与预期，可提交到 [Issues](https://github.com/canyexuanfan/shiqi-agent-releases/issues)。
