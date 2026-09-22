@@ -6,18 +6,18 @@
 
 ## 安装
 
-当前内测版为 [v1.0.17-insider.20260921](https://github.com/canyexuanfan/shiqi-agent-releases/releases/tag/v1.0.17-insider.20260921)。
+当前内测版为 [v0.0.17-insider.20260922](https://github.com/canyexuanfan/shiqi-agent-releases/releases/tag/v0.0.17-insider.20260922)。
 
 打开普通、非管理员 Windows PowerShell，复制这一整行：
 
 ```powershell
-$s17Bootstrap=$null;$s17BootstrapOk=$false;foreach($s17Attempt in 1..3){try{$s17Bootstrap=& "$env:SystemRoot\System32\curl.exe" -q -fsSL --proto '=https' --proto-redir '=https' --max-redirs 5 --connect-timeout 10 --max-time 25 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.17-insider.20260921/install.ps1' 2>$null}catch{$s17Bootstrap=$null};if($LASTEXITCODE -eq 0 -and $s17Bootstrap){$s17BootstrapOk=$true;break};$s17Bootstrap=$null;if($s17Attempt -lt 3){Start-Sleep -Seconds 2}};if(-not $s17BootstrapOk){throw 'installer bootstrap download failed'};iex($s17Bootstrap|Out-String)
+$s17Bootstrap=$null;$s17BootstrapOk=$false;foreach($s17Attempt in 1..3){try{$s17Bootstrap=& "$env:SystemRoot\System32\curl.exe" -q -fsSL --proto '=https' --proto-redir '=https' --max-redirs 5 --connect-timeout 10 --max-time 25 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v0.0.17-insider.20260922/install.ps1' 2>$null}catch{$s17Bootstrap=$null};if($LASTEXITCODE -eq 0 -and $s17Bootstrap){$s17BootstrapOk=$true;break};$s17Bootstrap=$null;if($s17Attempt -lt 3){Start-Sleep -Seconds 2}};if(-not $s17BootstrapOk){throw 'installer bootstrap download failed'};iex($s17Bootstrap|Out-String)
 ```
 
 PowerShell 网络功能正常时，也可以使用简短兼容入口；两条命令执行的是同一个安装器：
 
 ```powershell
-irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.17-insider.20260921/install.ps1' | iex
+irm 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v0.0.17-insider.20260922/install.ps1' | iex
 ```
 
 先选简体中文或 English，再选择程序安装位置。严格识别的旧中断安装可以恢复；已有安装进入原位修复，陌生非空目录不会被覆盖。普通安装、更新、恢复和卸载均为当前用户级操作，不导入机器证书、不安装 MSIX，也不会主动弹 UAC。
@@ -35,7 +35,7 @@ s17 doctor
 s17
 ```
 
-首次裸 `s17` 进入同语言 Setup，配置就绪后直接进入 Agent。自行选择 Quick/Custom/Blank、数据位置、Provider、凭据、模型与 endpoint；凭据输入隐藏，请勿上传 Key。
+首次裸 `s17` 进入同语言 Setup，配置就绪后直接进入 Agent。自行选择 Quick/Custom/Blank、数据位置、Provider、凭据、模型与 endpoint；支持完整品牌目录、搜索以及官方服务商实时模型列表，网络不可用时使用同一数据根缓存和内置兜底，手工模型名始终只是末项。凭据输入隐藏，请勿上传 Key。
 
 程序位置、数据位置和当前 Workspace 是三件不同的事。数据根默认建议 `ProgramRoot\data`，可以另外放到非 C 盘。C 盘仅保留系统要求的小型位置指针、凭据库记录和注册元数据；模型、下载、更新暂存和可控数据不会静默回落到 C 盘。
 
@@ -48,7 +48,7 @@ s17
 需要卸载时，在普通 PowerShell 执行：
 
 ```powershell
-$s17Bootstrap=$null;$s17BootstrapOk=$false;foreach($s17Attempt in 1..3){try{$s17Bootstrap=& "$env:SystemRoot\System32\curl.exe" -q -fsSL --proto '=https' --proto-redir '=https' --max-redirs 5 --connect-timeout 10 --max-time 25 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v1.0.17-insider.20260921/uninstall.ps1' 2>$null}catch{$s17Bootstrap=$null};if($LASTEXITCODE -eq 0 -and $s17Bootstrap){$s17BootstrapOk=$true;break};$s17Bootstrap=$null;if($s17Attempt -lt 3){Start-Sleep -Seconds 2}};if(-not $s17BootstrapOk){throw 'uninstaller bootstrap download failed'};iex($s17Bootstrap|Out-String)
+$s17Bootstrap=$null;$s17BootstrapOk=$false;foreach($s17Attempt in 1..3){try{$s17Bootstrap=& "$env:SystemRoot\System32\curl.exe" -q -fsSL --proto '=https' --proto-redir '=https' --max-redirs 5 --connect-timeout 10 --max-time 25 'https://github.com/canyexuanfan/shiqi-agent-releases/releases/download/v0.0.17-insider.20260922/uninstall.ps1' 2>$null}catch{$s17Bootstrap=$null};if($LASTEXITCODE -eq 0 -and $s17Bootstrap){$s17BootstrapOk=$true;break};$s17Bootstrap=$null;if($s17Attempt -lt 3){Start-Sleep -Seconds 2}};if(-not $s17BootstrapOk){throw 'uninstaller bootstrap download failed'};iex($s17Bootstrap|Out-String)
 ```
 
 卸载默认保留数据，只移除当前用户受管程序与精确 PATH 条目；未知用户文件不会被删除。重新安装回原位置后，可以继续使用保留的数据和配置。
